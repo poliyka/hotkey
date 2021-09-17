@@ -1,24 +1,22 @@
-from StringPool import VK_CODE, VK_SHIFT_CODE
-
-import time
 import threading
-from pynput import keyboard, mouse
-from get_color import get_color_hex
-from script import Script
 
+from pynput import keyboard, mouse
+
+from script import Script
 
 key_ctr = keyboard.Controller()
 mouse_ctr = mouse.Controller()
+
 
 class StartListener:
     def __init__(self, btn_start):
         self.btn_start = btn_start
         self.key = None
         self.switch = False
-        self.start_listen()
         self.script = Script()
+        self.start_listen()
 
-    # 初始設定
+    # 初始監聽
     def start_listen(self):
         threading.Thread(target=self.mouse_listener).start()
         threading.Thread(target=self.keyboard_listener).start()
@@ -35,8 +33,7 @@ class StartListener:
 
     # 按鍵監聽
     def on_press(self, key):
-
-        print(f"Keyboard press: {key}")
+        # print(f"Keyboard press: {key}")
         self.key = key
 
         # 結束監聽
@@ -61,9 +58,9 @@ class StartListener:
                 self.script.start_script()
                 self.on_press("loop")
 
-
     def on_release(self, key):
-        print(f"Keyboard release: {key}")
+        pass
+        # print(f"Keyboard release: {key}")
 
     # 滑鼠監聽
     def on_move(self, x, y):
@@ -72,12 +69,14 @@ class StartListener:
             return False
 
     def on_click(self, x, y, button, pressed):
-        print("{0} at {1}".format("Pressed" if pressed else "Released", (x, y)))
+        pass
+        # print("{0} at {1}".format("Pressed" if pressed else "Released", (x, y)))
 
     def on_scroll(self, x, y, dx, dy):
-        print("Scrolled {0} at {1}".format("down" if dy < 0 else "up", (x, y)))
+        pass
+        # print("Scrolled {0} at {1}".format("down" if dy < 0 else "up", (x, y)))
 
 
 # 監聽啟動
-def call_start(btn_start):
+def start(btn_start):
     StartListener(btn_start)

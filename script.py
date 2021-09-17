@@ -1,7 +1,13 @@
 import time
+
 from pynput import keyboard, mouse
+
+from get_color import get_color_hex, get_color_rgb
+from StringPool import VK_CODE, VK_SHIFT_CODE
+
 key_ctr = keyboard.Controller()
 mouse_ctr = mouse.Controller()
+
 
 class Script:
     auto_loop = True
@@ -9,22 +15,21 @@ class Script:
 
     def start_script(self):
         mouse_ctr.position = (379, 12)
-        time.sleep(.5)
+        time.sleep(0.5)
         mouse_ctr.click(mouse.Button.left)
-        time.sleep(.5)
+        time.sleep(0.5)
 
         mouse_ctr.position = (408, 524)
-        time.sleep(.5)
+        time.sleep(0.5)
         mouse_ctr.click(mouse.Button.left)
-        time.sleep(.5)
+        time.sleep(0.5)
 
         mouse_ctr.position = (1137, 377)
-        time.sleep(.5)
+        time.sleep(0.5)
         mouse_ctr.click(mouse.Button.left)
-        time.sleep(.5)
+        time.sleep(0.5)
 
         mouse_ctr.position = (379, 12)
-
 
 
 #############################################
