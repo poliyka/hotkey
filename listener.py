@@ -4,9 +4,6 @@ from pynput import keyboard, mouse
 
 from script import Script
 
-key_ctr = keyboard.Controller()
-mouse_ctr = mouse.Controller()
-
 
 class StartListener:
     def __init__(self, btn_start):
