@@ -8,13 +8,15 @@
 python3 ./setup.py
 ```
 
-> 2.EntryPoint => [gui.py](./gui.py)
+> 2.在[script.py](./script.py)撰寫腳本
+
+> 3.執行GUI程式[gui.py](./gui.py)
 
 ```h
 python3 ./gui.py
 ```
 
-> 3.使用 pyinstaller 打包 EXE
+> 4.使用 pyinstaller 打包 EXE
 
 ```h
 在cmd環境下cd到檔案目錄
