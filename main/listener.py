@@ -1,17 +1,39 @@
 import threading
+import sys
+from collections import deque
+from os.path import dirname, abspath
 
 from pynput import keyboard, mouse
 
+CURRENT_DIR = dirname(__file__)
+path = abspath(CURRENT_DIR + "/../")
+sys.path.append(path)
 from script import Script
+
+from get_color import get_color_hex, get_color_rgb
+from StringPool import VK_CODE, VK_SHIFT_CODE
+from window_capture import capture
 
 
 class StartListener:
-    def __init__(self, btn_start):
-        self.btn_start = btn_start
+    def __init__(self, get_attr):
+        self.get_attr = get_attr
+        self.log = self.get_attr("log")
+        self.log_deque = deque(maxlen=3)
+        self.btn_start = self.get_attr("btn_start")
+        self.on_move_text = self.get_attr("on_move_text")
         self.key = None
         self.switch = False
-        self.script = Script()
         self.start_listen()
+        self.cache_click = tuple()
+        self.pk = {
+            "get_color_hex": get_color_hex,
+            "get_color_rgb": get_color_rgb,
+            "VK_CODE": VK_CODE,
+            "VK_SHIFT_CODE": VK_SHIFT_CODE,
+            "capture": capture,
+        }
+        self.script = Script(self.pk)
 
     # 初始監聽
     def start_listen(self):
@@ -61,13 +83,27 @@ class StartListener:
 
     # 滑鼠監聽
     def on_move(self, x, y):
+        self.on_move_text.set(f"滑鼠位置: {x}, {y}")
         # print('Pointer moved to {0}'.format((x, y)))
         if self.key == keyboard.Key.esc:
             return False
 
     def on_click(self, x, y, button, pressed):
-        pass
-        # print("{0} at {1}".format("Pressed" if pressed else "Released", (x, y)))
+        # print("{!= at {1}".format("Pressed" if pressed else "Released", (x, y)))
+        if (x, y) != self.cache_click:
+            try:
+                color = get_color_hex(x, y)
+            except:
+                color = "None"
+
+            self.log_deque.append((x, y, color))
+            self.cache_click = (x, y)
+
+        text = ""
+        for i, log in enumerate(self.log_deque):
+            text += f"{i+1}. {log[0]}, {log[1]} {log[2]}\n"
+
+        self.log.replace_all(text)
 
     def on_scroll(self, x, y, dx, dy):
         pass
@@ -75,5 +111,5 @@ class StartListener:
 
 
 # 監聽啟動
-def start(btn_start):
-    StartListener(btn_start)
+def start(get_attr):
+    StartListener(get_attr)

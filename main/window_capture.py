@@ -6,8 +6,18 @@ from PIL import Image
 from PIL import ImageGrab
 
 
-def capture():
+def capture(x1, y1, x2, y2):
+    """
+    點1 = (x1, y1)
+    點2 = (x2, y2)
+    拍照範圍為點1, 點2所包圍之矩形
+    """
+    # 以PIL套件獲取螢幕截圖(方便快速)
+    box = (x1, y1, x2, y2)
+    img = ImageGrab.grab(box)
+    img.save("capture.png")
 
+    """
     # 以api方式擷取畫面 (步驟複雜可控性多)
 
     hwnd = 0  # 視窗的編號，0號表示當前活躍視窗
@@ -33,18 +43,9 @@ def capture():
     # 擷取從左上角（0，0）長寬為（w，h）的圖片
     # 圖片大小(擷取大小)   #左移 數字大   #上移 數字大
     saveDC.BitBlt((0, 0), (w, h), mfcDC, (int(w * 0.286), int(h * 0.246)), win32con.SRCCOPY)
-    saveBitMap.SaveBitmapFile(saveDC, "test.png")
-
-    # 以PIL套件獲取螢幕截圖(方便快速)
-    # x = 2149
-    # y = 454
-    # m = 2351
-    # n = 656
-
-    # box = (x,y,m,n)
-    # img = ImageGrab.grab(box)
-    # img.save("test.png")
+    saveBitMap.SaveBitmapFile(saveDC, "capture.png")
+    """
 
 
 if __name__ == "__main__":
-    capture()
+    capture(759, 197, 1882, 881)
