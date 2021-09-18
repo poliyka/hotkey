@@ -1,5 +1,6 @@
 import threading
 import sys
+import time
 from collections import deque
 from os.path import dirname, abspath
 
@@ -24,9 +25,11 @@ class StartListener:
         self.on_move_text = self.get_attr("on_move_text")
         self.key = None
         self.switch = False
-        self.start_listen()
         self.cache_click = tuple()
         self.pk = {
+            "time": time,
+            "keyboard": keyboard,
+            "mouse": mouse,
             "get_color_hex": get_color_hex,
             "get_color_rgb": get_color_rgb,
             "VK_CODE": VK_CODE,
@@ -34,6 +37,7 @@ class StartListener:
             "capture": capture,
         }
         self.script = Script(self.pk)
+        self.start_listen()
 
     # 初始監聽
     def start_listen(self):
@@ -58,6 +62,7 @@ class StartListener:
         # 結束監聽
         if key == keyboard.Key.esc:
             self.btn_start.config(state="active")
+            self.switch = False
             return False
 
         # 執行腳本
