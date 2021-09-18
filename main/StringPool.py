@@ -1,7 +1,3 @@
-from os.path import dirname, join
-
-CURRENT_DIR = dirname(__file__)
-
 VK_CODE = {
     "backspace": 0x08,
     "tab": 0x09,

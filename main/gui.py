@@ -5,6 +5,13 @@ from enum import Enum, auto
 
 import listener
 
+import sys
+from os.path import dirname, abspath
+CURRENT_DIR = dirname(__file__)
+path = abspath(CURRENT_DIR + "/../")
+sys.path.append(path)
+
+
 
 class App_start:
     def __init__(self, frame):
@@ -47,7 +54,6 @@ class App_start:
             command=self.btn_Start_click,
         )
 
-
     def log_area(self):
         self.log_tk = tk.Text(self.frame,
                               font=('標楷體', 12),
@@ -61,7 +67,9 @@ class App_start:
                               )
 
     def btn_Start_click(self):
-        t = threading.Thread(target=listener.start, args=(self.get_attr,))
+        from script import Script
+        t = threading.Thread(target=listener.start, args=(self.get_attr, Script))
+        t.setName("bin_start")
         t.start()
         self.btn_start.config(state="disable")
 
@@ -93,7 +101,7 @@ def closeWindow():
 
 if __name__ == "__main__":
     win = tk.Tk()
-    win.geometry("210x220+100+100")
+    win.geometry("210x250+100+100")
     win.title("鍵鼠自動腳本程式")
     win.attributes("-topmost", 1)
     frame = tk.Frame(win)

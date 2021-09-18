@@ -15,7 +15,7 @@ def capture(x1, y1, x2, y2):
     # 以PIL套件獲取螢幕截圖(方便快速)
     box = (x1, y1, x2, y2)
     img = ImageGrab.grab(box)
-    img.save("capture.png")
+    img.save("../capture.png")
 
     """
     # 以api方式擷取畫面 (步驟複雜可控性多)

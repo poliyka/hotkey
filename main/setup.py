@@ -2,7 +2,7 @@ import subprocess
 
 
 def setup():
-    cmd = "pip install pillow pynput"
+    cmd = "pip install pillow pynput win32gui"
     subprocess.call(cmd, shell=True)
 
 

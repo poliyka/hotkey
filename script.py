@@ -1,35 +1,36 @@
-import time
-
-from pynput import keyboard, mouse
-
-from get_color import get_color_hex, get_color_rgb
-from StringPool import VK_CODE, VK_SHIFT_CODE
-
-key_ctr = keyboard.Controller()
-mouse_ctr = mouse.Controller()
-
-
 class Script:
-    auto_loop = True
-    n_loop = 2
+    def __init__(self, pk):
+        self.auto_loop = True
+        self.n_loop = 2
+        self.time = pk.get("time")
+        self.keyboard = pk.get("keyboard")
+        self.mouse = pk.get("mouse")
+        self.key_ctr = self.keyboard.Controller()
+        self.mouse_ctr = self.mouse.Controller()
+        self.get_color_hex = pk.get("get_color_hex")
+        self.get_color_rgb = pk.get("get_color_rgb")
+        self.VK_CODE = pk.get("VK_CODE")
+        self.VK_SHIFT_CODE = pk.get("VK_SHIFT_CODE")
+        self.capture = pk.get("capture")
 
     def start_script(self):
-        mouse_ctr.position = (379, 12)
-        time.sleep(0.5)
-        mouse_ctr.click(mouse.Button.left)
-        time.sleep(0.5)
+        self.mouse_ctr.position = (379, 12)
+        self.time.sleep(0.5)
+        self.mouse_ctr.click(self.mouse.Button.left)
+        self.time.sleep(0.5)
 
-        mouse_ctr.position = (408, 524)
-        time.sleep(0.5)
-        mouse_ctr.click(mouse.Button.left)
-        time.sleep(0.5)
+        self.mouse_ctr.position = (408, 524)
+        self.time.sleep(0.5)
+        self.mouse_ctr.click(self.mouse.Button.left)
+        self.time.sleep(0.5)
 
-        mouse_ctr.position = (1137, 377)
-        time.sleep(0.5)
-        mouse_ctr.click(mouse.Button.left)
-        time.sleep(0.5)
+        self.mouse_ctr.position = (1137, 377)
+        self.time.sleep(0.5)
+        self.mouse_ctr.click(self.mouse.Button.left)
+        self.time.sleep(0.5)
 
-        mouse_ctr.position = (379, 12)
+        # self.mouse_ctr.position = (379, 12)
+        # self.capture(759, 197, 1882, 881)
 
 
 #############################################
