@@ -2,6 +2,7 @@ import threading
 import tkinter as tk
 from tkinter import StringVar, ttk
 from enum import Enum, auto
+import importlib
 
 import listener
 
@@ -10,7 +11,8 @@ from os.path import dirname, abspath
 CURRENT_DIR = dirname(__file__)
 path = abspath(CURRENT_DIR + "/../")
 sys.path.append(path)
-
+import script
+from script import Script
 
 
 class App_start:
@@ -67,8 +69,8 @@ class App_start:
                               )
 
     def btn_Start_click(self):
-        from script import Script
-        t = threading.Thread(target=listener.start, args=(self.get_attr, Script))
+        importlib.reload(script)
+        t = threading.Thread(target=listener.start, args=(self.get_attr, script))
         t.setName("bin_start")
         t.start()
         self.btn_start.config(state="disable")

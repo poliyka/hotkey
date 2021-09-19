@@ -10,7 +10,7 @@ from window_capture import capture
 
 
 class StartListener:
-    def __init__(self, get_attr, Script):
+    def __init__(self, get_attr, script):
         self.get_attr = get_attr
         self.log = self.get_attr("log")
         self.log_deque = deque(maxlen=3)
@@ -29,11 +29,10 @@ class StartListener:
             "VK_SHIFT_CODE": VK_SHIFT_CODE,
             "capture": capture,
         }
-        self.script = Script(self.pk)
+        self.script = script.Script(self.pk)
         self.mouse_listener = mouse.Listener(
             on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll
         )
-        self.keyboard_listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
         self.start_listen()
 
     # 初始監聽
@@ -49,12 +48,8 @@ class StartListener:
         self.mouse_listener.start()
 
     def keyboard_listener_start(self):
-        self.keyboard_listener.start()
-
-    def new_keyboard_listener_start(self):
         with keyboard.Listener(on_press=self.on_press, on_release=self.on_release) as listener:
             listener.join()
-
 
     # 按鍵監聽
     def on_press(self, key):
@@ -63,31 +58,13 @@ class StartListener:
 
         # 結束監聽
         if key == keyboard.Key.esc:
-            self.btn_start.config(state="active")
-            self.switch = False
-            self.mouse_listener.stop()
-            self.keyboard_listener.stop()
-            return False
-
+            return self._esc(key)
         # 執行腳本
         if key == keyboard.Key.f2:
-            self.switch = False if self.switch else True
-            if self.script.auto_loop:
-                self.on_press("loop")
-            else:
-                for i in range(self.script.n_loop):
-                    self.script.start_script()
-                    # print(f"{i+1}/{self.script.n_loop}")
-
-            self.keyboard_listener.stop()
-            return False
-        elif key == "loop":
-            if self.switch:
-                t1 = threading.Thread(target=self.new_keyboard_listener_start)
-                t1.setName("new_keyboard")
-                t1.start()
-                self.script.start_script()
-                self.on_press("loop")
+            return self._f2(key)
+        # loop腳本
+        if key == "loop":
+            return self._loop(key)
 
     def on_release(self, key):
         pass
@@ -119,8 +96,36 @@ class StartListener:
         pass
         # print("Scrolled {0} at {1}".format("down" if dy < 0 else "up", (x, y)))
 
+    # 按鍵Event
+    def _f2(self, key):
+        self.switch = False if self.switch else True
+        if self.switch:
+            t1 = threading.Thread(target=self.keyboard_listener_start)
+            t1.setName("new_keyboard")
+            t1.start()
+        else:
+            return False
+
+        if self.script.auto_loop:
+            self.on_press("loop")
+        else:
+            for i in range(self.script.n_loop):
+                self.script.start_script()
+                # print(f"{i+1}/{self.script.n_loop}")
+
+
+    def _loop(self, key):
+        if self.switch:
+            self.script.start_script()
+            self.on_press("loop")
+
+    def _esc(self, key):
+        self.btn_start.config(state="active")
+        self.switch = False
+        self.mouse_listener.stop()
+        return False
 
 # 監聽啟動
-def start(get_attr, Script):
-    StartListener(get_attr, Script)
+def start(get_attr, script):
+    StartListener(get_attr, script)
 

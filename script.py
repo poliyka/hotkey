@@ -16,18 +16,18 @@ class Script:
     def start_script(self):
         self.mouse_ctr.position = (379, 12)
         self.time.sleep(0.5)
-        self.mouse_ctr.click(self.mouse.Button.left)
-        self.time.sleep(0.5)
+        # self.mouse_ctr.click(self.mouse.Button.left)
+        # self.time.sleep(0.5)
 
         self.mouse_ctr.position = (408, 524)
         self.time.sleep(0.5)
-        self.mouse_ctr.click(self.mouse.Button.left)
-        self.time.sleep(0.5)
+        # self.mouse_ctr.click(self.mouse.Button.left)
+        # self.time.sleep(0.5)
 
         self.mouse_ctr.position = (1137, 377)
         self.time.sleep(0.5)
-        self.mouse_ctr.click(self.mouse.Button.left)
-        self.time.sleep(0.5)
+        # self.mouse_ctr.click(self.mouse.Button.left)
+        # self.time.sleep(0.5)
 
         # self.mouse_ctr.position = (379, 12)
         # self.capture(759, 197, 1882, 881)
