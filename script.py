@@ -1,7 +1,8 @@
 class Script:
     def __init__(self, pk):
-        self.auto_loop = True
-        self.n_loop = 2
+        #####################################################
+        # 可使用變數, 不可修改
+        #####################################################
         self.time = pk.get("time")
         self.keyboard = pk.get("keyboard")
         self.mouse = pk.get("mouse")
@@ -13,24 +14,33 @@ class Script:
         self.VK_SHIFT_CODE = pk.get("VK_SHIFT_CODE")
         self.capture = pk.get("capture")
 
+        #####################################################
+        # 可修正參數
+        # auto_loop: 是否自動回圈(True/False)
+        # n_loop: 自動回圈為False時, 腳本運行次數
+        #####################################################
+        self.auto_loop = True
+        self.n_loop = 1
+
     def start_script(self):
         self.mouse_ctr.position = (379, 12)
         self.time.sleep(0.5)
-        # self.mouse_ctr.click(self.mouse.Button.left)
-        # self.time.sleep(0.5)
+        self.mouse_ctr.click(self.mouse.Button.left)
+        self.time.sleep(0.5)
 
         self.mouse_ctr.position = (408, 524)
         self.time.sleep(0.5)
-        # self.mouse_ctr.click(self.mouse.Button.left)
-        # self.time.sleep(0.5)
-
-        self.mouse_ctr.position = (1137, 377)
+        self.mouse_ctr.click(self.mouse.Button.left)
         self.time.sleep(0.5)
+
+        # self.mouse_ctr.position = (1137, 377)
+        # self.time.sleep(0.5)
         # self.mouse_ctr.click(self.mouse.Button.left)
         # self.time.sleep(0.5)
 
         # self.mouse_ctr.position = (379, 12)
         # self.capture(759, 197, 1882, 881)
+        # self.time.sleep(3)
 
 
 #############################################
