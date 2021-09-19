@@ -22,7 +22,7 @@ class Script:
         self.auto_loop = False
         self.n_loop = 10
 
-    def start_script(self):
+    def main(self):
         self.mouse_ctr.position = (379, 12)
         self.time.sleep(0.5)
         # self.mouse_ctr.click(self.mouse.Button.left)

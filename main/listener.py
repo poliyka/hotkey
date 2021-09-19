@@ -122,14 +122,14 @@ class StartListener:
 
     def _loop(self, key):
         if self.switch:
-            self.script.start_script()
+            self.script.main()
             self.on_press("loop")
 
     def _n_loop(self, key):
         if self.switch:
             if self.n_loop <= self.script.n_loop:
                 self.script_mode_text.set(f"腳本模式: {self.n_loop}/{self.script.n_loop}")
-                self.script.start_script()
+                self.script.main()
                 self.n_loop += 1
                 self.on_press("n_loop")
 
