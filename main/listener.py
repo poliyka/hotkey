@@ -5,7 +5,7 @@ from collections import deque
 from pynput import keyboard, mouse
 
 from get_color import get_color_hex, get_color_rgb
-from StringPool import VK_CODE, VK_SHIFT_CODE
+from vk_pool import VK_CODE, VK_SHIFT_CODE
 from window_capture import capture
 
 
