@@ -19,6 +19,7 @@ class App_start:
     def __init__(self, frame):
         self.frame = frame
         self.on_move_text = tk.StringVar()
+        self.script_mode_text = tk.StringVar()
         self.button()
         self.label()
         self.log_area()
@@ -34,17 +35,24 @@ class App_start:
             self.frame,
             text="熱鍵:\nF2執行腳本/結束腳本\nESC:結束監聽",
             font=("標楷體", 12),
+            justify="left",
             width=20,
             height=5,
-            background="pink",
+            background="#add8e6",
         )
         self.on_move_tk = tk.Label(
             self.frame,
-            text="",
             font=("標楷體", 12),
             width=20,
             height=1,
             textvariable=self.on_move_text
+        )
+        self.script_mode_tk = tk.Label(
+            self.frame,
+            font=("標楷體", 12),
+            width=20,
+            height=1,
+            textvariable=self.script_mode_text
         )
 
     def button(self):
@@ -61,10 +69,10 @@ class App_start:
                               font=('標楷體', 12),
                               width=22,
                               height=4,
-                              bg='white',
-                              fg='black',
-                              highlightcolor="pink",
-                              selectbackground="MidnightBlue",
+                              bg='#f5f5f5',
+                              fg='#00008a',
+                              selectforeground="#ffa500",
+                              selectbackground="#8b008b",
                               borderwidth=2,
                               )
 
@@ -89,9 +97,10 @@ class App_start:
 
     def grid_place(self):
         self.note_tk.grid(row=0, column=1, pady=2)
-        self.on_move_tk.grid(row=1, column=1, pady=2)
-        self.log_tk.grid(row=2, column=1, pady=2)
-        self.btn_start.grid(row=3, column=1, pady=2)
+        self.on_move_tk.grid(row=1, column=1, pady=1)
+        self.script_mode_tk.grid(row=2, column=1, pady=1)
+        self.log_tk.grid(row=3, column=1, pady=2)
+        self.btn_start.grid(row=4, column=1, pady=2)
 
 
 def closeWindow():
@@ -103,7 +112,7 @@ def closeWindow():
 
 if __name__ == "__main__":
     win = tk.Tk()
-    win.geometry("210x230+100+100")
+    win.geometry("210x240+100+100")
     win.title("鍵鼠自動腳本程式")
     win.attributes("-topmost", 1)
     frame = tk.Frame(win)

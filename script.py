@@ -19,8 +19,8 @@ class Script:
         # auto_loop: 是否自動回圈(True/False)
         # n_loop: 自動回圈為False時, 腳本運行次數
         #####################################################
-        self.auto_loop = True
-        self.n_loop = 1
+        self.auto_loop = False
+        self.n_loop = 10
 
     def start_script(self):
         self.mouse_ctr.position = (379, 12)

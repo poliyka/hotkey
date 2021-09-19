@@ -16,6 +16,8 @@ class StartListener:
         self.log_deque = deque(maxlen=3)
         self.btn_start = self.get_attr("btn_start")
         self.on_move_text = self.get_attr("on_move_text")
+        self.script_mode_text = self.get_attr("script_mode_text")
+        self.script_mode_text.set(f"腳本模式: Stop")
         self.key = None
         self.switch = False
         self.cache_click = tuple()
@@ -104,15 +106,17 @@ class StartListener:
             t1.setName("new_keyboard")
             t1.start()
         else:
+            self.script_mode_text.set(f"腳本模式: Stop")
             return False
 
         if self.script.auto_loop:
+            self.script_mode_text.set(f"腳本模式: Auto")
             self.on_press("loop")
         else:
             for i in range(self.script.n_loop):
+                self.script_mode_text.set(f"腳本模式: {i+1}/{self.script.n_loop}")
                 self.script.start_script()
                 # print(f"{i+1}/{self.script.n_loop}")
-
 
     def _loop(self, key):
         if self.switch:
@@ -121,11 +125,12 @@ class StartListener:
 
     def _esc(self, key):
         self.btn_start.config(state="active")
+        self.script_mode_text.set(f"腳本模式: Stop")
         self.switch = False
         self.mouse_listener.stop()
         return False
 
+
 # 監聽啟動
 def start(get_attr, script):
     StartListener(get_attr, script)
-
