@@ -1,3 +1,4 @@
+import os
 import win32gui
 import win32ui
 import win32con
@@ -15,7 +16,22 @@ def capture(x1, y1, x2, y2):
     # 以PIL套件獲取螢幕截圖(方便快速)
     box = (x1, y1, x2, y2)
     img = ImageGrab.grab(box)
-    img.save("../capture.png")
+
+    directory = "../image"
+    if not os.path.isdir(directory):
+        os.mkdir(directory)
+
+    file_name = "/capture.png"
+    if not os.path.isfile(directory + file_name):
+        img.save(directory + file_name)
+    else:
+        i = 1
+        while True:
+            file_name = f"/capture({i}).png"
+            if not os.path.isfile(directory + file_name):
+                img.save(directory + file_name)
+                break
+            i += 1
 
     """
     # 以api方式擷取畫面 (步驟複雜可控性多)

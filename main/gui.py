@@ -103,7 +103,7 @@ def closeWindow():
 
 if __name__ == "__main__":
     win = tk.Tk()
-    win.geometry("210x250+100+100")
+    win.geometry("210x230+100+100")
     win.title("鍵鼠自動腳本程式")
     win.attributes("-topmost", 1)
     frame = tk.Frame(win)
