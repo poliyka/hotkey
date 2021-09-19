@@ -19,16 +19,16 @@ class Script:
         # auto_loop: 是否自動回圈(True/False)
         # n_loop: 自動回圈為False時, 腳本運行次數
         #####################################################
-        self.auto_loop = False
-        self.n_loop = 10
+        self.auto_loop = True
+        self.n_loop = 1
 
     def main(self):
-        self.mouse_ctr.position = (379, 12)
+        self.mouse_ctr.position = (849, 401)
         self.time.sleep(0.5)
         # self.mouse_ctr.click(self.mouse.Button.left)
         # self.time.sleep(0.5)
 
-        self.mouse_ctr.position = (408, 524)
+        self.mouse_ctr.position = (851, 577)
         self.time.sleep(0.5)
         # self.mouse_ctr.click(self.mouse.Button.left)
         # self.time.sleep(0.5)
@@ -39,7 +39,7 @@ class Script:
         # self.time.sleep(0.5)
 
         # self.mouse_ctr.position = (379, 12)
-        # self.capture(759, 197, 1882, 881)
+        # self.capture(106, 96, 427, 478)
         # self.time.sleep(3)
 
 

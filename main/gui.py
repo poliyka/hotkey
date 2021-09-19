@@ -6,6 +6,11 @@ import tkinter as tk
 from os.path import abspath, dirname
 from tkinter import ttk
 
+import ctypes
+
+ctypes.windll.shcore.SetProcessDpiAwareness(2)
+ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(2) / 100
+
 CURRENT_DIR = dirname(__file__)
 path = abspath(CURRENT_DIR + "/../")
 sys.path.append(path)
@@ -111,7 +116,12 @@ def closeWindow():
 
 if __name__ == "__main__":
     win = tk.Tk()
-    win.geometry("210x240+100+100")
+    w = int(210 * ScaleFactor)
+    h = int(250 * ScaleFactor)
+    dw = int(100 * ScaleFactor)
+    dh = int(100 * ScaleFactor)
+    geo = f"{w}x{h}+{dw}+{dh}"
+    win.geometry(geo)
     win.title("鍵鼠自動腳本程式")
     win.attributes("-topmost", 1)
     frame = tk.Frame(win)
