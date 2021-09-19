@@ -41,10 +41,18 @@ class App_start:
             background="#add8e6",
         )
         self.on_move_tk = tk.Label(
-            self.frame, font=("標楷體", 12), width=20, height=1, textvariable=self.on_move_text
+            self.frame,
+            font=("標楷體", 12),
+            width=20,
+            height=1,
+            textvariable=self.on_move_text,
         )
         self.script_mode_tk = tk.Label(
-            self.frame, font=("標楷體", 12), width=20, height=1, textvariable=self.script_mode_text
+            self.frame,
+            font=("標楷體", 12),
+            width=20,
+            height=1,
+            textvariable=self.script_mode_text,
         )
 
     def button(self):
