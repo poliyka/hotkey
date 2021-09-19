@@ -12,7 +12,6 @@ CURRENT_DIR = dirname(__file__)
 path = abspath(CURRENT_DIR + "/../")
 sys.path.append(path)
 import script
-from script import Script
 
 
 class App_start:
