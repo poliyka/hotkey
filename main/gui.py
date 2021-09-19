@@ -3,6 +3,7 @@ import importlib
 import threading
 
 import tkinter as tk
+from tkinter import scrolledtext
 from os.path import abspath, dirname
 from tkinter import ttk
 
@@ -36,7 +37,7 @@ class App_start:
     def label(self):
         self.note_tk = tk.Label(
             self.frame,
-            text="熱鍵:\nF2執行腳本/結束腳本\nESC:結束監聽",
+            text="熱鍵:\nF2執行腳本\nF3執行滑鼠腳本\nESC:結束監聽",
             font=("標楷體", 12),
             justify="left",
             width=20,
@@ -66,13 +67,21 @@ class App_start:
             cursor="hand2",
             command=self.btn_Start_click,
         )
+        self.btn_record_mouse = ttk.Button(
+            self.frame,
+            text="錄製滑鼠",
+            width=20,
+            cursor="hand2",
+            command=self.btn_record_mouse_click,
+        )
 
     def log_area(self):
-        self.log_tk = tk.Text(
+        self.log_tk = scrolledtext.ScrolledText(
             self.frame,
-            font=("標楷體", 12),
             width=22,
-            height=4,
+            height=5,
+            wrap="word",
+            font=("標楷體", 12),
             bg="#f5f5f5",
             fg="#00008a",
             selectforeground="#ffa500",
@@ -85,6 +94,13 @@ class App_start:
         t = threading.Thread(target=listener.start, args=(self.get_attr, script))
         t.setName("bin_start")
         t.start()
+        self.btn_start.config(state="disable")
+
+    def btn_record_mouse_click(self):
+        t = threading.Thread(target=listener.start, args=(self.get_attr, script, "mouse_record"))
+        t.setName("mouse_record")
+        t.start()
+        self.btn_record_mouse.config(state="disable")
         self.btn_start.config(state="disable")
 
     class Log:
@@ -105,6 +121,7 @@ class App_start:
         self.script_mode_tk.grid(row=2, column=1, pady=1)
         self.log_tk.grid(row=3, column=1, pady=2)
         self.btn_start.grid(row=4, column=1, pady=2)
+        self.btn_record_mouse.grid(row=5, column=1, pady=2)
 
 
 def closeWindow():
@@ -117,7 +134,7 @@ def closeWindow():
 if __name__ == "__main__":
     win = tk.Tk()
     w = int(210 * ScaleFactor)
-    h = int(250 * ScaleFactor)
+    h = int(280 * ScaleFactor)
     dw = int(100 * ScaleFactor)
     dh = int(100 * ScaleFactor)
     geo = f"{w}x{h}+{dw}+{dh}"

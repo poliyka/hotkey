@@ -1,5 +1,7 @@
 import threading
 import time
+import pickle
+import os
 from collections import deque
 
 from pynput import keyboard, mouse
@@ -10,14 +12,14 @@ from window_capture import capture
 
 
 class StartListener:
-    def __init__(self, get_attr, script):
+    def __init__(self, get_attr, script, mode):
+        self.mode = mode
         self.get_attr = get_attr
         self.log = self.get_attr("log")
-        self.log_deque = deque(maxlen=3)
         self.btn_start = self.get_attr("btn_start")
         self.on_move_text = self.get_attr("on_move_text")
         self.script_mode_text = self.get_attr("script_mode_text")
-        self.script_mode_text.set(f"腳本模式: Stop")
+        self.pickle_path = "mouse_record.pickle"
         self.n_loop = 1
         self.key = None
         self.switch = False
@@ -36,16 +38,13 @@ class StartListener:
         self.mouse_listener = mouse.Listener(
             on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll
         )
-        self.start_listen()
 
-    # 初始監聽
-    def start_listen(self):
-        t1 = threading.Thread(target=self.mouse_listener_start)
-        t2 = threading.Thread(target=self.keyboard_listener_start)
-        t1.setName("start_mouse")
-        t2.setName("start_keyboard")
-        t1.start()
-        t2.start()
+        if self.mode == "default":
+            self.log_deque = deque(maxlen=3)
+            self._default_mode()
+        elif self.mode == "mouse_record":
+            self.log_deque = deque()
+            self._mouse_record_mode()
 
     def mouse_listener_start(self):
         self.mouse_listener.start()
@@ -83,27 +82,36 @@ class StartListener:
 
     def on_click(self, x, y, button, pressed):
         # print("{!= at {1}".format("Pressed" if pressed else "Released", (x, y)))
-        if (x, y) != self.cache_click:
-            try:
-                color = get_color_hex(x, y)
-            except:
-                color = "None"
 
-            self.log_deque.append((x, y, color))
-            self.cache_click = (x, y)
-
-        text = ""
-        for i, log in enumerate(self.log_deque):
-            text += f"{i+1}. {log[0]}, {log[1]} {log[2]}\n"
-
-        self.log.replace_all(text)
+        if self.mode == "default":
+            self._log_msg_on_click(x, y, button, pressed)
+        elif self.mode == "mouse_record":
+            self._log_msg_on_click(x, y, button, pressed)
+            self._mouse_record(x, y, button, pressed)
 
     def on_scroll(self, x, y, dx, dy):
         pass
         # print("Scrolled {0} at {1}".format("down" if dy < 0 else "up", (x, y)))
 
-    # 按鍵Event
+    # Keyboard Event
     def _f2(self, key):
+        self.switch = False if self.switch else True
+        if self.switch:
+            t1 = threading.Thread(target=self.keyboard_listener_start)
+            t1.setName("new_keyboard")
+            t1.start()
+        else:
+            self.n_loop = 0
+            self.script_mode_text.set(f"腳本模式: Stop")
+            return False
+
+        if self.script.auto_loop:
+            self.script_mode_text.set(f"腳本模式: Auto")
+            self.on_press("loop")
+        else:
+            self.on_press("n_loop")
+
+    def _f3(self, key):
         self.switch = False if self.switch else True
         if self.switch:
             t1 = threading.Thread(target=self.keyboard_listener_start)
@@ -140,7 +148,60 @@ class StartListener:
         self.mouse_listener.stop()
         return False
 
+    # Mouse Event
+    def _log_msg_on_click(self, x, y, button, pressed):
+        if (x, y) != self.cache_click:
+            try:
+                color = get_color_hex(x, y)
+            except:
+                color = "None"
+
+            self.log_deque.appendleft((x, y, color))
+            self.cache_click = (x, y)
+
+        text = ""
+        q_len = len(self.log_deque)
+        for log in self.log_deque:
+            text += f"{q_len}. {log[0]}, {log[1]} {log[2]}\n"
+            q_len -= 1
+
+        self.log.replace_all(text)
+
+    def _mouse_record(self, x, y, button, pressed):
+        df = pickle_load(self.pickle_path)
+        print(df)
+        pickle_save(self.pickle_path, self.log_deque)
+
+
+
+    # Mode
+    def _default_mode(self):
+        self.script_mode_text.set(f"腳本模式: Stop")
+        t1 = threading.Thread(target=self.mouse_listener_start)
+        t2 = threading.Thread(target=self.keyboard_listener_start)
+        t1.setName("start_mouse")
+        t2.setName("start_keyboard")
+        t1.start()
+        t2.start()
+
+    def _mouse_record_mode(self):
+        self.script_mode_text.set(f"滑鼠錄製模式: Start")
+        t1 = threading.Thread(target=self.mouse_listener_start)
+        t1.setName("start_mouse")
+        t1.start()
+
 
 # 監聽啟動
-def start(get_attr, script):
-    StartListener(get_attr, script)
+def start(get_attr, script, mode="default"):
+    StartListener(get_attr, script, mode)
+
+
+def pickle_load(file_name):
+    if not os.path.isfile(file_name):
+        return False
+    with open(file_name, 'rb') as pickle_file:
+        return pickle.load(pickle_file)
+
+def pickle_save(file_name, data):
+    with open(file_name, 'wb') as f:
+        pickle.dump(data, f)

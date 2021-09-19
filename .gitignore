@@ -139,3 +139,6 @@ cython_debug/
 
 # vscode
 .vscode/*
+
+# pickle file
+mouse_record.pickle
