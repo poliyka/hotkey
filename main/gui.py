@@ -2,9 +2,8 @@ import importlib
 import sys
 import threading
 import tkinter as tk
-from enum import Enum, auto
 from os.path import abspath, dirname
-from tkinter import StringVar, ttk
+from tkinter import ttk
 
 import listener
 
