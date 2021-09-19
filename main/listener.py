@@ -18,6 +18,7 @@ class StartListener:
         self.on_move_text = self.get_attr("on_move_text")
         self.script_mode_text = self.get_attr("script_mode_text")
         self.script_mode_text.set(f"腳本模式: Stop")
+        self.n_loop = 1
         self.key = None
         self.switch = False
         self.cache_click = tuple()
@@ -67,6 +68,9 @@ class StartListener:
         # loop腳本
         if key == "loop":
             return self._loop(key)
+        # n_loop腳本
+        if key == "n_loop":
+            return self._n_loop(key)
 
     def on_release(self, key):
         pass
@@ -106,6 +110,7 @@ class StartListener:
             t1.setName("new_keyboard")
             t1.start()
         else:
+            self.n_loop = 0
             self.script_mode_text.set(f"腳本模式: Stop")
             return False
 
@@ -113,15 +118,20 @@ class StartListener:
             self.script_mode_text.set(f"腳本模式: Auto")
             self.on_press("loop")
         else:
-            for i in range(self.script.n_loop):
-                self.script_mode_text.set(f"腳本模式: {i+1}/{self.script.n_loop}")
-                self.script.start_script()
-                # print(f"{i+1}/{self.script.n_loop}")
+            self.on_press("n_loop")
 
     def _loop(self, key):
         if self.switch:
             self.script.start_script()
             self.on_press("loop")
+
+    def _n_loop(self, key):
+        if self.switch:
+            if self.n_loop <= self.script.n_loop:
+                self.script_mode_text.set(f"腳本模式: {self.n_loop}/{self.script.n_loop}")
+                self.script.start_script()
+                self.n_loop += 1
+                self.on_press("n_loop")
 
     def _esc(self, key):
         self.btn_start.config(state="active")

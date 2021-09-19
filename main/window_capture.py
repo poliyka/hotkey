@@ -1,10 +1,10 @@
 import os
+
+import win32api
+import win32con
 import win32gui
 import win32ui
-import win32con
-import win32api
-from PIL import Image
-from PIL import ImageGrab
+from PIL import Image, ImageGrab
 
 
 def capture(x1, y1, x2, y2):

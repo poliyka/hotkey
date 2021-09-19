@@ -1,13 +1,13 @@
+import importlib
+import sys
 import threading
 import tkinter as tk
-from tkinter import StringVar, ttk
 from enum import Enum, auto
-import importlib
+from os.path import abspath, dirname
+from tkinter import StringVar, ttk
 
 import listener
 
-import sys
-from os.path import dirname, abspath
 CURRENT_DIR = dirname(__file__)
 path = abspath(CURRENT_DIR + "/../")
 sys.path.append(path)
@@ -41,18 +41,10 @@ class App_start:
             background="#add8e6",
         )
         self.on_move_tk = tk.Label(
-            self.frame,
-            font=("標楷體", 12),
-            width=20,
-            height=1,
-            textvariable=self.on_move_text
+            self.frame, font=("標楷體", 12), width=20, height=1, textvariable=self.on_move_text
         )
         self.script_mode_tk = tk.Label(
-            self.frame,
-            font=("標楷體", 12),
-            width=20,
-            height=1,
-            textvariable=self.script_mode_text
+            self.frame, font=("標楷體", 12), width=20, height=1, textvariable=self.script_mode_text
         )
 
     def button(self):
@@ -65,16 +57,17 @@ class App_start:
         )
 
     def log_area(self):
-        self.log_tk = tk.Text(self.frame,
-                              font=('標楷體', 12),
-                              width=22,
-                              height=4,
-                              bg='#f5f5f5',
-                              fg='#00008a',
-                              selectforeground="#ffa500",
-                              selectbackground="#8b008b",
-                              borderwidth=2,
-                              )
+        self.log_tk = tk.Text(
+            self.frame,
+            font=("標楷體", 12),
+            width=22,
+            height=4,
+            bg="#f5f5f5",
+            fg="#00008a",
+            selectforeground="#ffa500",
+            selectbackground="#8b008b",
+            borderwidth=2,
+        )
 
     def btn_Start_click(self):
         importlib.reload(script)
@@ -88,7 +81,7 @@ class App_start:
             self.log_tk = log_tk
 
         def replace_all(self, text):
-            self.log_tk.delete(1.0,"end")
+            self.log_tk.delete(1.0, "end")
             self.log_tk.insert(1.0, text)
 
         def replace_line(self, text, start, end):
