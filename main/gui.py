@@ -1,15 +1,15 @@
-import importlib
 import sys
+import importlib
 import threading
+
 import tkinter as tk
 from os.path import abspath, dirname
 from tkinter import ttk
 
-import listener
-
 CURRENT_DIR = dirname(__file__)
 path = abspath(CURRENT_DIR + "/../")
 sys.path.append(path)
+import listener
 import script
 
 
