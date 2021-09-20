@@ -23,6 +23,7 @@ class StartListener:
         self.on_move_text = self.get_attr("on_move_text")
         self.script_mode_text = self.get_attr("script_mode_text")
         self.mouse_record_spinbox_tk = self.get_attr("mouse_record_spinbox_tk")
+        self.mouse_record_speed_spinbox_tk = self.get_attr("mouse_record_speed_spinbox_tk")
         self.pickle_path = "mouse_record.pickle"
         self.n_loop = 1
         self.key = None
@@ -145,15 +146,9 @@ class StartListener:
             self.on_press("n_loop")
 
     def _start_mouse_record(self, key):
-        self.switch = False if self.switch else True
-        if self.switch:
-            t1 = threading.Thread(target=self.keyboard_listener_start)
-            t1.setName("new_keyboard")
-            t1.start()
-        else:
-            self.n_loop = 0
-            self.script_mode_text.set(f"滑鼠腳本模式: Stop")
-            return False
+        t1 = threading.Thread(target=self.keyboard_listener_start)
+        t1.setName("new_keyboard")
+        t1.start()
 
         if int(self.mouse_record_spinbox_tk.get()) == -1:
             self.script_mode_text.set(f"滑鼠腳本模式: Auto")
@@ -178,20 +173,19 @@ class StartListener:
                 self.on_press("n_loop")
 
     def _mouse_record_loop(self, key):
-        if self.switch:
-            self._mouse_record_script()
-            self.on_press("mouse_record_loop")
+        self._mouse_record_script()
+        self.on_press("mouse_record_loop")
 
     def _mouse_n_loop(self, key):
         n_loop = int(self.mouse_record_spinbox_tk.get())
-        if self.switch:
-            if self.n_loop <= n_loop:
-                self.script_mode_text.set(f"滑鼠腳本模式: {self.n_loop}/{n_loop}")
-                self._mouse_record_script()
-                self.n_loop += 1
-                self.on_press("mouse_n_loop")
-            else:
-                self.on_press(keyboard.Key.esc)
+        if self.n_loop <= n_loop:
+            self.script_mode_text.set(f"滑鼠腳本模式: {self.n_loop}/{n_loop}")
+            self._mouse_record_script()
+            self.n_loop += 1
+            self.on_press("mouse_n_loop")
+        else:
+            with key_ctr.pressed(keyboard.Key.esc):
+                pass
 
     def _esc(self, key):
         self.btn_active()
@@ -253,14 +247,15 @@ class StartListener:
     # script
     def _mouse_record_script(self):
         try:
+            speed = float(self.mouse_record_speed_spinbox_tk.get())
             for i, log in enumerate(self.log_deque):
                 text = f"{i+1}. {log[0]}, {log[1]} {log[2]}\n"
                 self.log.replace_all(text)
 
                 mouse_ctr.position = (log[0], log[1])
-                time.sleep(0.5)
+                time.sleep(speed)
                 mouse_ctr.click(mouse.Button.left)
-                time.sleep(0.5)
+                time.sleep(speed)
 
         except Exception as e:
             self.log.replace_all(f"腳本錯誤請重新錄製\n{str(e)}")

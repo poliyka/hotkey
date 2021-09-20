@@ -33,6 +33,7 @@ class App_start:
         # after create
         self.log = self.Log(self.log_tk)
         self.mouse_record_spinbox_tk.set(1)
+        self.mouse_record_speed_spinbox_tk.set(0.30)
 
     def get_attr(self, attr):
         return getattr(self, attr, None)
@@ -40,11 +41,11 @@ class App_start:
     def label(self):
         self.note_tk = tk.Label(
             self.frame,
-            text="熱鍵:\nF2執行腳本\nESC:結束監聽",
+            text="Start:\n\tF2開始/結束腳本\n\t執行腳本\n滑鼠錄製:\n\t錄製滑鼠->次數->間隔\n\t執行錄製\nESC:結束",
             font=("標楷體", 12),
             justify="left",
-            width=20,
-            height=5,
+            width=30,
+            height=7,
             background="#add8e6",
         )
         self.on_move_tk = tk.Label(
@@ -88,7 +89,7 @@ class App_start:
     def log_area(self):
         self.log_tk = scrolledtext.ScrolledText(
             self.frame,
-            width=22,
+            width=25,
             height=5,
             wrap="word",
             font=("標楷體", 12),
@@ -103,8 +104,15 @@ class App_start:
         self.mouse_record_spinbox_tk = ttk.Spinbox(
             self.frame,
             from_=-1,
-            to=999999,
+            to=999999999,
             increment=1,
+            wrap=True,
+        )
+        self.mouse_record_speed_spinbox_tk = ttk.Spinbox(
+            self.frame,
+            from_=0.05,
+            to=999999999,
+            increment=0.05,
             wrap=True,
         )
 
@@ -135,12 +143,14 @@ class App_start:
         self.btn_record_mouse_tk.config(state="disable")
         self.mouse_record_spinbox_tk.config(state="disable")
         self.btn_record_mouse_tk_start.config(state="disable")
+        self.mouse_record_speed_spinbox_tk.config(state="disable")
 
     def btn_active(self):
         self.btn_start_tk.config(state="active")
         self.btn_record_mouse_tk.config(state="active")
         self.mouse_record_spinbox_tk.config(state="active")
         self.btn_record_mouse_tk_start.config(state="active")
+        self.mouse_record_speed_spinbox_tk.config(state="active")
 
     class Log:
         def __init__(self, log_tk):
@@ -163,7 +173,8 @@ class App_start:
         self.btn_start_tk.grid(row=4, column=1, pady=2)
         self.btn_record_mouse_tk.grid(row=5, column=1, pady=2)
         self.mouse_record_spinbox_tk.grid(row=6, column=1, pady=2)
-        self.btn_record_mouse_tk_start.grid(row=7, column=1, pady=2)
+        self.mouse_record_speed_spinbox_tk.grid(row=7, column=1, pady=2)
+        self.btn_record_mouse_tk_start.grid(row=8, column=1, pady=2)
 
 
 def closeWindow():
@@ -175,8 +186,8 @@ def closeWindow():
 
 if __name__ == "__main__":
     win = tk.Tk()
-    w = int(210 * ScaleFactor)
-    h = int(340 * ScaleFactor)
+    w = int(260 * ScaleFactor)
+    h = int(400 * ScaleFactor)
     dw = int(100 * ScaleFactor)
     dh = int(100 * ScaleFactor)
     geo = f"{w}x{h}+{dw}+{dh}"
