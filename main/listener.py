@@ -253,7 +253,7 @@ class StartListener:
                 self.log.replace_all(text)
 
                 mouse_ctr.position = (log[0], log[1])
-                time.sleep(speed)
+                time.sleep(0.1)
                 mouse_ctr.click(mouse.Button.left)
                 time.sleep(speed)
 
