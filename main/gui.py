@@ -27,9 +27,12 @@ class App_start:
         self.button()
         self.label()
         self.log_area()
-        self.grid_place()
+        self.spinbox()
+        self.grid_layout()
 
+        # after create
         self.log = self.Log(self.log_tk)
+        self.mouse_record_spinbox_tk.set(1)
 
     def get_attr(self, attr):
         return getattr(self, attr, None)
@@ -60,19 +63,26 @@ class App_start:
         )
 
     def button(self):
-        self.btn_start = ttk.Button(
+        self.btn_start_tk = ttk.Button(
             self.frame,
             text="Start",
             width=20,
             cursor="hand2",
-            command=self.btn_Start_click,
+            command=self.btn_Start_tk_click,
         )
-        self.btn_record_mouse = ttk.Button(
+        self.btn_record_mouse_tk = ttk.Button(
             self.frame,
             text="錄製滑鼠",
             width=20,
             cursor="hand2",
-            command=self.btn_record_mouse_click,
+            command=self.btn_record_mouse_tk_click,
+        )
+        self.btn_record_mouse_tk_start = ttk.Button(
+            self.frame,
+            text="執行錄製",
+            width=20,
+            cursor="hand2",
+            command=self.btn_record_mouse_tk_start_click,
         )
 
     def log_area(self):
@@ -89,19 +99,48 @@ class App_start:
             borderwidth=2,
         )
 
-    def btn_Start_click(self):
+    def spinbox(self):
+        self.mouse_record_spinbox_tk = ttk.Spinbox(
+            self.frame,
+            from_=-1,
+            to=999999,
+            increment=1,
+            wrap=True,
+        )
+
+    # command function
+    def btn_Start_tk_click(self):
         importlib.reload(script)
         t = threading.Thread(target=listener.start, args=(self.get_attr, script))
         t.setName("bin_start")
         t.start()
-        self.btn_start.config(state="disable")
+        self.btn_disable()
 
-    def btn_record_mouse_click(self):
+    def btn_record_mouse_tk_click(self):
         t = threading.Thread(target=listener.start, args=(self.get_attr, script, "mouse_record"))
         t.setName("mouse_record")
         t.start()
-        self.btn_record_mouse.config(state="disable")
-        self.btn_start.config(state="disable")
+        self.btn_disable()
+
+    def btn_record_mouse_tk_start_click(self):
+        t = threading.Thread(
+            target=listener.start, args=(self.get_attr, script, "mouse_record_start")
+        )
+        t.setName("mouse_record_start")
+        t.start()
+        self.btn_disable()
+
+    def btn_disable(self):
+        self.btn_start_tk.config(state="disable")
+        self.btn_record_mouse_tk.config(state="disable")
+        self.mouse_record_spinbox_tk.config(state="disable")
+        self.btn_record_mouse_tk_start.config(state="disable")
+
+    def btn_active(self):
+        self.btn_start_tk.config(state="active")
+        self.btn_record_mouse_tk.config(state="active")
+        self.mouse_record_spinbox_tk.config(state="active")
+        self.btn_record_mouse_tk_start.config(state="active")
 
     class Log:
         def __init__(self, log_tk):
@@ -115,13 +154,16 @@ class App_start:
             self.log_tk.delete(start, end)
             self.log_tk.insert(start, text)
 
-    def grid_place(self):
+    # layout
+    def grid_layout(self):
         self.note_tk.grid(row=0, column=1, pady=2)
         self.on_move_tk.grid(row=1, column=1, pady=1)
         self.script_mode_tk.grid(row=2, column=1, pady=1)
         self.log_tk.grid(row=3, column=1, pady=2)
-        self.btn_start.grid(row=4, column=1, pady=2)
-        self.btn_record_mouse.grid(row=5, column=1, pady=2)
+        self.btn_start_tk.grid(row=4, column=1, pady=2)
+        self.btn_record_mouse_tk.grid(row=5, column=1, pady=2)
+        self.mouse_record_spinbox_tk.grid(row=6, column=1, pady=2)
+        self.btn_record_mouse_tk_start.grid(row=7, column=1, pady=2)
 
 
 def closeWindow():
@@ -134,7 +176,7 @@ def closeWindow():
 if __name__ == "__main__":
     win = tk.Tk()
     w = int(210 * ScaleFactor)
-    h = int(280 * ScaleFactor)
+    h = int(340 * ScaleFactor)
     dw = int(100 * ScaleFactor)
     dh = int(100 * ScaleFactor)
     geo = f"{w}x{h}+{dw}+{dh}"
