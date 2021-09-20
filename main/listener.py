@@ -253,9 +253,8 @@ class StartListener:
     # script
     def _mouse_record_script(self):
         try:
-            text = ""
             for i, log in enumerate(self.log_deque):
-                text += f"{i+1}. {log[0]}, {log[1]} {log[2]}\n"
+                text = f"{i+1}. {log[0]}, {log[1]} {log[2]}\n"
                 self.log.replace_all(text)
 
                 mouse_ctr.position = (log[0], log[1])
