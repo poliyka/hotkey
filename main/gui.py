@@ -40,7 +40,7 @@ class App_start:
     def label(self):
         self.note_tk = tk.Label(
             self.frame,
-            text="熱鍵:\nF2執行腳本\nF3執行滑鼠腳本\nESC:結束監聽",
+            text="熱鍵:\nF2執行腳本\nESC:結束監聽",
             font=("標楷體", 12),
             justify="left",
             width=20,

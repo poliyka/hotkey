@@ -94,8 +94,8 @@ class StartListener:
             if key == keyboard.Key.esc:
                 return self._esc(key)
             # 執行腳本
-            if key == keyboard.Key.f3:
-                return self._f3(key)
+            if key == "start_mouse_record":
+                return self._start_mouse_record(key)
             # loop腳本
             if key == "mouse_record_loop":
                 return self._mouse_record_loop(key)
@@ -144,7 +144,7 @@ class StartListener:
         else:
             self.on_press("n_loop")
 
-    def _f3(self, key):
+    def _start_mouse_record(self, key):
         self.switch = False if self.switch else True
         if self.switch:
             t1 = threading.Thread(target=self.keyboard_listener_start)
@@ -248,7 +248,7 @@ class StartListener:
         t2.setName("start_keyboard")
         t1.start()
         t2.start()
-        self.on_press(keyboard.Key.f3)
+        self.on_press("start_mouse_record")
 
     # script
     def _mouse_record_script(self):
