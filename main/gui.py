@@ -200,4 +200,3 @@ if __name__ == "__main__":
     App_start(frame)
     win.protocol("WM_DELETE_WINDOW", closeWindow)
     win.mainloop()
-    "make a anan"
