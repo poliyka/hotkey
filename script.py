@@ -89,6 +89,6 @@ key_ctr.release("s")
 with key_ctr.pressed(keyboard.Key.ctrl, keyboard.Key.shift, "s"):
     pass
 
-輸日一串文字
+輸入一串文字
 key_ctr.type('Hello world!')
 """
